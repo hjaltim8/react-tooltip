@@ -1426,30 +1426,75 @@ exports.default = function (target) {
     var MutationObserver = getMutationObserverClass();
     if (MutationObserver == null) return;
 
-    var observer = new MutationObserver(function (mutations) {
-      if (mutations == null || mutations === undefined) return;
-      mutations.forEach(function (mutation) {
-        if (mutations.removedNodes == null || mutations.removedNodes === undefined) return;
-        mutations.removedNodes.forEach(function (element) {
-          if (element === _this.state.currentTarget) {
-            _this.hideTooltip();
-            return;
+    try {
+      var observer = new MutationObserver(function (mutations) {
+        // if (mutations == null || mutations === undefined) return
+        // mutations.forEach((mutation) => {
+        //   if (mutations.removedNodes == null || mutations.removedNodes === undefined) return
+        //   mutations.removedNodes.forEach((element) => {
+        //     if (element === this.state.currentTarget) {
+        //       this.hideTooltip()
+        //       return
+        //     }
+        //   })
+        // })
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = mutations[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var mutation = _step.value;
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+              for (var _iterator2 = mutation.removedNodes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                var element = _step2.value;
+
+                if (element === _this.state.currentTarget) {
+                  _this.hideTooltip();
+                  return;
+                }
+              }
+            } catch (err) {
+              _didIteratorError2 = true;
+              _iteratorError2 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                  _iterator2.return();
+                }
+              } finally {
+                if (_didIteratorError2) {
+                  throw _iteratorError2;
+                }
+              }
+            }
           }
-        });
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator.return) {
+              _iterator.return();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
       });
-      // for (const mutation of mutations) {
-      //   for (const element of mutation.removedNodes) {
-      //     if (element === this.state.currentTarget) {
-      //       this.hideTooltip()
-      //       return
-      //     }
-      //   }
-      // }
-    });
 
-    observer.observe(window.document, { childList: true, subtree: true });
+      observer.observe(window.document, { childList: true, subtree: true });
 
-    this.removalTracker = observer;
+      this.removalTracker = observer;
+    } catch (error) {
+      // Suppress the error...
+    }
   };
 
   target.prototype.unbindRemovalTracker = function () {

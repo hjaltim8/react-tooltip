@@ -19,30 +19,34 @@ export default function (target) {
     const MutationObserver = getMutationObserverClass()
     if (MutationObserver == null) return
 
-    const observer = new MutationObserver((mutations) => {
-      if (mutations == null || mutations === undefined) return
-      mutations.forEach((mutation) => {
-        if (mutations.removedNodes == null || mutations.removedNodes === undefined) return
-        mutations.removedNodes.forEach((element) => {
-          if (element === this.state.currentTarget) {
-            this.hideTooltip()
-            return
+    try {
+      const observer = new MutationObserver((mutations) => {
+        // if (mutations == null || mutations === undefined) return
+        // mutations.forEach((mutation) => {
+        //   if (mutations.removedNodes == null || mutations.removedNodes === undefined) return
+        //   mutations.removedNodes.forEach((element) => {
+        //     if (element === this.state.currentTarget) {
+        //       this.hideTooltip()
+        //       return
+        //     }
+        //   })
+        // })
+        for (const mutation of mutations) {
+          for (const element of mutation.removedNodes) {
+            if (element === this.state.currentTarget) {
+              this.hideTooltip()
+              return
+            }
           }
-        })
+        }
       })
-      // for (const mutation of mutations) {
-      //   for (const element of mutation.removedNodes) {
-      //     if (element === this.state.currentTarget) {
-      //       this.hideTooltip()
-      //       return
-      //     }
-      //   }
-      // }
-    })
 
-    observer.observe(window.document, { childList: true, subtree: true })
+      observer.observe(window.document, { childList: true, subtree: true })
 
-    this.removalTracker = observer
+      this.removalTracker = observer
+    } catch (error) {
+      // Suppress the error...
+    }
   }
 
   target.prototype.unbindRemovalTracker = function () {
