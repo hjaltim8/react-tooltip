@@ -20,16 +20,18 @@ export default function (target) {
     if (MutationObserver == null) return
 
     const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutations.removedNodes !== undefined) {
-          mutations.removedNodes.forEach((element) => {
-            if (element === this.state.currentTarget) {
-              this.hideTooltip()
-              return
-            }
-          })
-        }
-      })
+      if (mutations != null) {
+        mutations.forEach((mutation) => {
+          if (mutations.removedNodes != null) {
+            mutations.removedNodes.forEach((element) => {
+              if (element === this.state.currentTarget) {
+                this.hideTooltip()
+                return
+              }
+            })
+          }
+        })
+      }
       // for (const mutation of mutations) {
       //   for (const element of mutation.removedNodes) {
       //     if (element === this.state.currentTarget) {
