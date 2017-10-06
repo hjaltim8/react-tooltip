@@ -1428,12 +1428,14 @@ exports.default = function (target) {
 
     var observer = new MutationObserver(function (mutations) {
       mutations.forEach(function (mutation) {
-        mutations.removedNodes.forEach(function (element) {
-          if (element === _this.state.currentTarget) {
-            _this.hideTooltip();
-            return;
-          }
-        });
+        if (mutations.removedNodes !== undefined) {
+          mutations.removedNodes.forEach(function (element) {
+            if (element === _this.state.currentTarget) {
+              _this.hideTooltip();
+              return;
+            }
+          });
+        }
       });
       // for (const mutation of mutations) {
       //   for (const element of mutation.removedNodes) {
