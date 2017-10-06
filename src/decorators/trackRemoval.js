@@ -20,14 +20,22 @@ export default function (target) {
     if (MutationObserver == null) return
 
     const observer = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        for (const element of mutation.removedNodes) {
+      mutations.forEach((mutation) => {
+        mutations.removedNodes.forEach((element) => {
           if (element === this.state.currentTarget) {
             this.hideTooltip()
             return
           }
-        }
-      }
+        })
+      })
+      // for (const mutation of mutations) {
+      //   for (const element of mutation.removedNodes) {
+      //     if (element === this.state.currentTarget) {
+      //       this.hideTooltip()
+      //       return
+      //     }
+      //   }
+      // }
     })
 
     observer.observe(window.document, { childList: true, subtree: true })
