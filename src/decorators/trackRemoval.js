@@ -21,24 +21,24 @@ export default function (target) {
 
     try {
       const observer = new MutationObserver((mutations) => {
-        // if (mutations == null || mutations === undefined) return
-        // mutations.forEach((mutation) => {
-        //   if (mutations.removedNodes == null || mutations.removedNodes === undefined) return
-        //   mutations.removedNodes.forEach((element) => {
-        //     if (element === this.state.currentTarget) {
-        //       this.hideTooltip()
-        //       return
-        //     }
-        //   })
-        // })
-        for (const mutation of mutations) {
-          for (const element of mutation.removedNodes) {
+        if (mutations == null || mutations === undefined) return
+        mutations.forEach((mutation) => {
+          if (mutations.removedNodes == null || mutations.removedNodes === undefined) return
+          mutations.removedNodes.forEach((element) => {
             if (element === this.state.currentTarget) {
               this.hideTooltip()
               return
             }
-          }
-        }
+          })
+        })
+        // for (const mutation of mutations) {
+        //   for (const element of mutation.removedNodes) {
+        //     if (element === this.state.currentTarget) {
+        //       this.hideTooltip()
+        //       return
+        //     }
+        //   }
+        // }
       })
 
       observer.observe(window.document, { childList: true, subtree: true })
@@ -46,6 +46,7 @@ export default function (target) {
       this.removalTracker = observer
     } catch (error) {
       // Suppress the error...
+      console.info('error caught: ', error)
     }
   }
 
