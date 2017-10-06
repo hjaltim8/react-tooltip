@@ -12,18 +12,16 @@ exports.default = function (target) {
     if (MutationObserver == null) return;
 
     var observer = new MutationObserver(function (mutations) {
-      if (mutations != null) {
-        mutations.forEach(function (mutation) {
-          if (mutations.removedNodes != null) {
-            mutations.removedNodes.forEach(function (element) {
-              if (element === _this.state.currentTarget) {
-                _this.hideTooltip();
-                return;
-              }
-            });
+      if (mutations == null || mutations === undefined) return;
+      mutations.forEach(function (mutation) {
+        if (mutations.removedNodes == null || mutations.removedNodes === undefined) return;
+        mutations.removedNodes.forEach(function (element) {
+          if (element === _this.state.currentTarget) {
+            _this.hideTooltip();
+            return;
           }
         });
-      }
+      });
       // for (const mutation of mutations) {
       //   for (const element of mutation.removedNodes) {
       //     if (element === this.state.currentTarget) {
